@@ -44,7 +44,7 @@ x-airflow-common:
   # In order to add custom dependencies or upgrade provider packages you can use your extended image.
   # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
   # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
-  image: ${AIRFLOW_IMAGE_NAME:-brijeshdhaker/apache-airflow:2.4.3}
+  image: ${AIRFLOW_IMAGE_NAME:-brijeshdhaker/apache-airflow:2.5.0}
   # build: .
   env_file:
     - ./docker_airflow.env
@@ -55,7 +55,7 @@ x-airflow-common:
     # For backward compatibility, with Airflow <2.3
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: mysql+mysqldb://airflow:airflow@mysqlserver:3306/airflow
     AIRFLOW__CELERY__RESULT_BACKEND: db+mysql://airflow:airflow@mysqlserver:3306/airflow
-    AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
+    AIRFLOW__CELERY__BROKER_URL: redis://:@redisserver:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
@@ -75,16 +75,16 @@ x-airflow-common:
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
-    redis:
+    redisserver:
       condition: service_healthy
     mysqlserver:
       condition: service_healthy
 
 services:
 
-  redis:
-    container_name: redis
-    hostname: redis
+  redisserver:
+    container_name: redisserver
+    hostname: redisserver
     image: redis:latest
     expose:
       - 6379
@@ -197,6 +197,8 @@ services:
 
   airflow-init:
     <<: *airflow-common
+    container_name: airflow-init
+    hostname: airflow-init
     entrypoint: /bin/bash
     # yamllint disable rule:line-length
     command:
@@ -275,6 +277,8 @@ services:
 
   airflow-cli:
     <<: *airflow-common
+    container_name: airflow-cli
+    hostname: airflow-cli
     profiles:
       - debug
     environment:

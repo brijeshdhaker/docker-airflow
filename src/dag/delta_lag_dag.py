@@ -5,10 +5,10 @@ from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.models import Variable
 
-local_tz = pendulum.timezone("Asia/Kolkata")
+local_tz = pendulum.timezone("Asia/Tehran")
 
 default_args = {
-    'owner': 'brijeshdhaker',
+    'owner': 'mahdyne',
     'depends_on_past': False,
     'start_date': datetime(2020, 10, 10, tzinfo=local_tz),
     'email': ['nematpour.ma@gmail.com'],
@@ -20,8 +20,7 @@ default_args = {
 dag = DAG(dag_id='delta_lag_dag',
           default_args=default_args,
           catchup=False,
-          schedule_interval="30 * * * *",
-          tags=["spark"])
+          schedule_interval="30 * * * *")
 #pyspark_app_home=Variable.get("PYSPARK_APP_HOME")
 pyspark_app_home='/apps/hostpath/pyspark-apps/pyspark-airflow'
 click_stream_delta_lag_alert= SparkSubmitOperator(task_id='clickstream_delta_lag_alert',

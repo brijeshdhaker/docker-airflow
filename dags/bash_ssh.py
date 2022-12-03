@@ -25,7 +25,7 @@ default_args = {
     'retry_delay': timedelta(minutes=5)
 }
 
-dag = DAG(dag_id='bash_ssh', default_args=default_args)
+dag = DAG(dag_id='bash_ssh', default_args=default_args, tags=["ssh"])
 
 x = datetime.now()
 str_cmd = f'echo hello >> /tmp/hello-{x}.txt'

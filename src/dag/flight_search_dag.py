@@ -4,10 +4,10 @@ from airflow import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from airflow.models import Variable
 
-local_tz = pendulum.timezone("Asia/Kolkata")
+local_tz = pendulum.timezone("Asia/Tehran")
 
 default_args = {
-    'owner': 'brijeshdhaker',
+    'owner': 'mahdyne',
     'depends_on_past': False,
     'start_date': datetime(2020, 10, 10, tzinfo=local_tz),
     'email': ['nematpour.ma@gmail.com'],
@@ -19,8 +19,7 @@ default_args = {
 dag = DAG(dag_id='flight_search_dag',
           default_args=default_args,
           catchup=False,
-          schedule_interval="0 * * * *",
-          tags=["spark"])
+          schedule_interval="0 * * * *")
 pyspark_app_home = "/apps/hostpath/pyspark-apps/pyspark-airflow"
 
 flight_search_ingestion = SparkSubmitOperator(task_id='flight_search_ingestion',

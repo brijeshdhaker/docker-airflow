@@ -1,8 +1,8 @@
 #
-# docker build -t brijeshdhaker/apache-airflow:2.4.3 -f Dockerfile .
+# docker build -t brijeshdhaker/apache-airflow:2.5.0 -f Dockerfile .
 #
 
-FROM apache/airflow:2.4.3
+FROM apache/airflow:2.5.0
 
 USER root
 
@@ -14,4 +14,5 @@ RUN apt-get update \
 
 USER airflow
 
-RUN pip install --no-cache-dir pyspark==3.1.2 apache-airflow-providers-apache-spark
+RUN pip install apache-airflow[apache.spark]==2.5.0 \
+      --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.5.0/constraints-3.7.txt"

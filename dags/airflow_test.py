@@ -7,10 +7,10 @@ import pendulum
 from airflow.operators.bash import BashOperator
 from datetime import datetime, timedelta
 
-local_ist = pendulum.timezone("Asia/India")
+local_ist = pendulum.timezone("Asia/Kolkata")
 
 default_args = {
-    'owner': 'airflow',
+    'owner': 'brijeshdhaker',
     'depends_on_past': False,
     'start_date': datetime(2020, 10, 10, tzinfo=local_ist),
     'email': ['brijeshdhaker@gmail.com'],
@@ -24,7 +24,8 @@ dag = DAG(
     dag_id='airflow_test',
     default_args=default_args,
     catchup=False,
-    schedule_interval="0 * * * *")
+    schedule_interval="0 * * * *",
+    tags=["test"])
 
 # t1, t2 and t3 are examples of tasks created by instantiating operators
 t1 = BashOperator(
