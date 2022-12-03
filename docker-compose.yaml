@@ -62,9 +62,9 @@ x-airflow-common:
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     _PIP_ADDITIONAL_REQUIREMENTS: ''
   volumes:
-    - ./dags:/opt/airflow/dags
-    - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
+    - sandbox_airflow_dags:/opt/airflow/dags
+    - sandbox_airflow_logs:/opt/airflow/logs
+    - sandbox_airflow_plugins:/opt/airflow/plugins
     - sandbox_host_path:/apps/hostpath
     - sandbox_base_path:/apps/sandbox
     - sandbox_hadoop:/opt/hadoop-3.3.4
@@ -261,7 +261,7 @@ services:
           echo
         fi
         mkdir -p /sources/logs /sources/dags /sources/plugins
-        chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
+        # chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
     environment:
@@ -273,7 +273,7 @@ services:
       _PIP_ADDITIONAL_REQUIREMENTS: ''
     user: "0:0"
     volumes:
-      - .:/sources
+      - sandbox_airflow_sources:/sources
 
   airflow-cli:
     <<: *airflow-common
@@ -318,6 +318,14 @@ volumes:
   sandbox_host_path:
     external: true
   sandbox_base_path:
+    external: true
+  sandbox_airflow_sources:
+    external: true
+  sandbox_airflow_dags:
+    external: true
+  sandbox_airflow_logs:
+    external: true
+  sandbox_airflow_plugins:
     external: true
   sandbox_mysql_data:
     external: true

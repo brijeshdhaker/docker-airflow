@@ -17,7 +17,7 @@ default_args = {
     'owner': 'brijeshdhaker',
     'schedule_interval': '@once',
     'depends_on_past': False,
-    'start_date': datetime(2020, 10, 10, tzinfo=local_ist),
+    'start_date': datetime(2022, 12, 15, tzinfo=local_ist),
     'email': ['brijeshdhaker@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -27,8 +27,9 @@ default_args = {
 
 dag = DAG(dag_id='bash_ssh', default_args=default_args, tags=["ssh"])
 
-x = datetime.now()
-str_cmd = f'echo hello >> /tmp/hello-{x}.txt'
+current_datetime = datetime.now()
+event_datetime = int(current_datetime.timestamp())
+str_cmd = f'echo hello >> /tmp/hello-{event_datetime}.txt'
 t1 = SSHOperator(
     task_id="task1",
     command=str_cmd,
